@@ -18,7 +18,8 @@ namespace VerificadorCPF.API
             {
                 OBJ.Valido = NullOk.Valido;
                 OBJ.Mensagem = NullOk.Mensagem;
-                return OBJ;
+                return OBJ;   
+
             }
             RetornoResposta TamanhoOk = TamanhoVerificacao(CPF);
             if(TamanhoOk.Valido == false)
