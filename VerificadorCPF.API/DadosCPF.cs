@@ -113,28 +113,9 @@ namespace VerificadorCPF.API
 
         }
 
-        private static RetornoResposta LimpaVerificacao(string CPF)
-        {
-            string CPFLimpo = "";
-
-            foreach (char i in CPF)
-            {
-                if (char.IsDigit(i))
-                {
-                    CPFLimpo += i;
-
-                }
-            }
-            return new RetornoResposta
-            {
-                Valido = true,
-                Mensagem = CPFLimpo
-            };
-        }
-
         private static RetornoResposta IgualVerificacao(string CPF)
         {
-            if(CPF.Equals("00000000000") ||
+            if (CPF.Equals("00000000000") ||
                 CPF.Equals("11111111111") ||
                 CPF.Equals("22222222222") ||
                 CPF.Equals("33333333333") ||
@@ -158,6 +139,32 @@ namespace VerificadorCPF.API
                     Mensagem = ""
                 };
             }
+        }
+
+        private static RetornoResposta LimpaVerificacao(string CPF)
+        {
+            string CPFLimpo = "";
+
+            foreach (char i in CPF)
+            {
+                if (char.IsDigit(i))
+                {
+                    CPFLimpo += i;
+
+                }
+            }
+            return new RetornoResposta
+            {
+                Valido = true,
+                Mensagem = CPFLimpo
+            };
+        }
+
+        private static RetornoResposta ContaVerificacao(string CPF)
+        {
+            string CPFLimpo;
+
+            foreach ()
         }
 
     }
