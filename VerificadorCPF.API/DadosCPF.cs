@@ -111,12 +111,10 @@ namespace VerificadorCPF.API
 
             foreach (char i in CPF)
             {
-                try
+                if (char.IsDigit(i))
                 {
-                    CPFLimpo += Convert.ToString(Convert.ToInt32(i));
-                }
-                catch
-                {
+                    CPFLimpo += i;
+
                 }
             }
             return new RetornoResposta
