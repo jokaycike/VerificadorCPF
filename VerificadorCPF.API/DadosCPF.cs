@@ -107,6 +107,7 @@ namespace VerificadorCPF.API
 
         private static RetornoResposta LimpaVerificacao(string CPF)
         {
+
             string CPFLimpo = "";
 
             foreach (char i in CPF)
