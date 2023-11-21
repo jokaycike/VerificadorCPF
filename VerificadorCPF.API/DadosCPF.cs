@@ -38,8 +38,16 @@ namespace VerificadorCPF.API
                 return OBJ;
             }
 
-            RetornoResposta LimpaOK = LimpaVerificacao(CPF);
+            RetornoResposta IgualOk = IgualVerificacao(CPF);
+            if (IgualOk.Valido == false)
+            {
+                OBJ.Valido = IgualOk.Valido;
+                OBJ.Mensagem = IgualOk.Mensagem;
+                return OBJ;
+            }
 
+            RetornoResposta LimpaOK = LimpaVerificacao(CPF);
+            
             OBJ.Mensagem = "oiii";
             return OBJ;
         }
@@ -107,7 +115,6 @@ namespace VerificadorCPF.API
 
         private static RetornoResposta LimpaVerificacao(string CPF)
         {
-
             string CPFLimpo = "";
 
             foreach (char i in CPF)
@@ -125,13 +132,33 @@ namespace VerificadorCPF.API
             };
         }
 
-        private static RetornoResposta ContaVerificacao(string CPF)
+        private static RetornoResposta IgualVerificacao(string CPF)
         {
-            return new RetornoResposta
+            if(CPF.Equals("00000000000") ||
+                CPF.Equals("11111111111") ||
+                CPF.Equals("22222222222") ||
+                CPF.Equals("33333333333") ||
+                CPF.Equals("44444444444") ||
+                CPF.Equals("55555555555") ||
+                CPF.Equals("66666666666") ||
+                CPF.Equals("77777777777") ||
+                CPF.Equals("99999999999"))
             {
-                Valido = true,
-                Mensagem = CPF
-            };
+                return new RetornoResposta
+                {
+                    Valido = false,
+                    Mensagem = "Você nãi inseriu um CPF valido"
+                };
+            }
+            else
+            {
+                return new RetornoResposta
+                {
+                    Valido = true,
+                    Mensagem = ""
+                };
+            }
         }
+
     }
 }
