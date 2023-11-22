@@ -14,6 +14,8 @@ namespace VerificadorCPF.API
         public static DadosCPF TodaVerificacao(string CPF)
         {
             DadosCPF OBJ = new DadosCPF();
+            OBJ.Data = DateTime.Now;
+
             RetornoResposta NullOk = NullVerificacao(CPF);
             if (NullOk.Valido == false)
             {
@@ -47,8 +49,20 @@ namespace VerificadorCPF.API
             }
 
             RetornoResposta LimpaOK = LimpaVerificacao(CPF);
-            
-            OBJ.Mensagem = "oiii";
+
+            RetornoResposta ContaOk = ContaVerificacao(LimpaOK.Mensagem);
+            if(ContaOk.Valido == false)
+            { 
+                OBJ.Valido = ContaOk.Valido;
+                OBJ.Mensagem = ContaOk.Mensagem;
+                return OBJ;
+            }
+
+            OBJ.Mensagem = ContaOk.Mensagem;
+            OBJ.Valido = ContaOk.Valido;
+
+            RetornoResposta OrganizadoOK = OrganizaCPF(LimpaOK.Mensagem);
+            OBJ.CPF = OrganizadoOK.Mensagem;
             return OBJ;
         }
 
@@ -128,7 +142,7 @@ namespace VerificadorCPF.API
                 return new RetornoResposta
                 {
                     Valido = false,
-                    Mensagem = "Você nãi inseriu um CPF valido"
+                    Mensagem = "Você não inseriu um CPF valido"
                 };
             }
             else
@@ -162,10 +176,80 @@ namespace VerificadorCPF.API
 
         private static RetornoResposta ContaVerificacao(string CPF)
         {
-            string CPFLimpo;
+            int soma = 0;
 
-            foreach ()
+            for (int i = 0; i < 9; i++)
+            {
+                int dados = CPF[i] - '0';
+                soma += dados * (10 - i);
+            }
+
+            int resto = soma % 11;
+            int primeiroDigitoVerificador = resto < 2 ? 0 : 11 - resto;
+
+
+            string teste = CPF.Substring(1, 8);
+            string CPFpenultimoDigito = CPF.Substring(1, 8) + primeiroDigitoVerificador.ToString();
+
+            int soma2 = 0;
+
+            for (int i = 0; i < 9; i++)                       
+            {
+                int dados = CPFpenultimoDigito[i] - '0';
+                soma2 += dados * (10 - i);
+            }
+
+            int resto2 = soma2 % 11;
+            int segundoDigitoVerificador = resto2 < 2 ? 0 : 11 - resto2;
+
+            string CPFCompleto = CPF.Substring(0,1) + CPFpenultimoDigito + segundoDigitoVerificador.ToString();
+
+            if(CPF == CPFCompleto)
+            {
+                return new RetornoResposta
+                {
+                    Valido = true,
+                    Mensagem = "CPF válido"
+                };
+            }
+            else
+            {
+                return new RetornoResposta
+                {
+                    Valido = false,
+                    Mensagem = "CPF inválido"
+                };
+            }
         }
 
+        private static RetornoResposta OrganizaCPF(string CPF)
+        {
+            string CPFOrganizado = "";
+
+            CPFOrganizado += CPF.Substring(0,3);
+            CPFOrganizado += ".";
+            CPFOrganizado += CPF.Substring(3, 3);
+            CPFOrganizado += ".";
+            CPFOrganizado += CPF.Substring(6, 3);
+            CPFOrganizado += "-";
+            CPFOrganizado += CPF.Substring(9, 2);
+
+            return new RetornoResposta
+            {
+                Valido = true,
+                Mensagem = CPFOrganizado
+            };
+        }
+
+        private static RetornoResposta Estado(string CPF)
+        {
+            char nonoDigito = CPF[8];
+
+            switch(nonoDigito)
+            {
+                case '0':
+                    
+            }
+        }
     }
 }
