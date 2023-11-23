@@ -63,6 +63,9 @@ namespace VerificadorCPF.API
 
             RetornoResposta OrganizadoOK = OrganizaCPF(LimpaOK.Mensagem);
             OBJ.CPF = OrganizadoOK.Mensagem;
+          
+            RetornoResposta EstadoOk = EstadoCPF(LimpaOK.Mensagem);
+            OBJ.Estado = EstadoOk.Mensagem;
             return OBJ;
         }
 
@@ -73,7 +76,7 @@ namespace VerificadorCPF.API
                 return new RetornoResposta
                 {
                     Valido = false,
-                    Mensagem = "Campo não preenchido"
+                    Mensagem = "Campo não preenchido, preencha com um CPF."
                 };
             }
             else
@@ -101,7 +104,7 @@ namespace VerificadorCPF.API
                 return new RetornoResposta
                 {
                     Valido = false,
-                    Mensagem = "Tamanho inválido"
+                    Mensagem = "O CPF inserido não tem um tamanho válido."
                 };
             }
         }
@@ -121,7 +124,7 @@ namespace VerificadorCPF.API
                 return new RetornoResposta
                 {
                     Valido = false,
-                    Mensagem = "Confira se não está enserindo letra ou simbolos ou esta colocando a pontuação no lugar errado"
+                    Mensagem = "Confira se não está inserindo letra ou símbolos ou está colocando a pontuação no lugar errado"
                 };
             }
 
@@ -187,8 +190,6 @@ namespace VerificadorCPF.API
             int resto = soma % 11;
             int primeiroDigitoVerificador = resto < 2 ? 0 : 11 - resto;
 
-
-            string teste = CPF.Substring(1, 8);
             string CPFpenultimoDigito = CPF.Substring(1, 8) + primeiroDigitoVerificador.ToString();
 
             int soma2 = 0;
@@ -209,7 +210,7 @@ namespace VerificadorCPF.API
                 return new RetornoResposta
                 {
                     Valido = true,
-                    Mensagem = "CPF válido"
+                    Mensagem = "CPF inserido é válido"
                 };
             }
             else
@@ -217,7 +218,7 @@ namespace VerificadorCPF.API
                 return new RetornoResposta
                 {
                     Valido = false,
-                    Mensagem = "CPF inválido"
+                    Mensagem = "CPF inserido não é inválido"
                 };
             }
         }
@@ -241,15 +242,58 @@ namespace VerificadorCPF.API
             };
         }
 
-        private static RetornoResposta Estado(string CPF)
+        private static RetornoResposta EstadoCPF(string CPF)
         {
+            string Estado = "";
             char nonoDigito = CPF[8];
+            int DigitoEstado = nonoDigito - '0';
 
-            switch(nonoDigito)
+            if (DigitoEstado == 1)
             {
-                case '0':
-                    
+                Estado = "Distrito Federal, Goiás, Mato Grosso, Mato Grosso do Sul e Tocantins";
             }
+            if(DigitoEstado == 2)
+            {
+                Estado = "Pará, Amazonas, Acre, Amapá, Rondônia e Roraima";
+            }
+            if (DigitoEstado == 3)
+            {
+                Estado = "Ceará, Maranhão e Piauí";
+            }
+            if (DigitoEstado == 4)
+            {
+                Estado = "Pernambuco, Rio Grande do Norte, Paraíba e Alagoas";
+            }
+            if (DigitoEstado == 5)
+            {
+                Estado = "Bahia e Sergipe";
+            }
+            if (DigitoEstado == 6)
+            {
+                Estado = "Minas Gerais";
+            }
+            if (DigitoEstado == 7)
+            {
+                Estado = "Rio de Janeiro e Espírito Santo";
+            }
+            if (DigitoEstado == 8)
+            {
+                Estado = "São Paulo";
+            }
+            if (DigitoEstado == 9)
+            {
+                Estado = "Paraná e Santa Catarina";
+            }
+            if (DigitoEstado == 0)
+            {
+                Estado = "Rio Grande do Sul";
+            }
+            return new RetornoResposta
+            {
+                Valido = true,
+                Mensagem = Estado
+            };
+            
         }
     }
 }
