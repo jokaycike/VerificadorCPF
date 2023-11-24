@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Routing;
+using System;
 using System.Text.RegularExpressions;
 
 namespace VerificadorCPF.API
@@ -248,46 +250,22 @@ namespace VerificadorCPF.API
             char nonoDigito = CPF[8];
             int DigitoEstado = nonoDigito - '0';
 
-            if (DigitoEstado == 1)
+            List<string> ListaEstados = new List<string>() 
             {
-                Estado = "Distrito Federal, Goiás, Mato Grosso, Mato Grosso do Sul e Tocantins";
-            }
-            if(DigitoEstado == 2)
-            {
-                Estado = "Pará, Amazonas, Acre, Amapá, Rondônia e Roraima";
-            }
-            if (DigitoEstado == 3)
-            {
-                Estado = "Ceará, Maranhão e Piauí";
-            }
-            if (DigitoEstado == 4)
-            {
-                Estado = "Pernambuco, Rio Grande do Norte, Paraíba e Alagoas";
-            }
-            if (DigitoEstado == 5)
-            {
-                Estado = "Bahia e Sergipe";
-            }
-            if (DigitoEstado == 6)
-            {
-                Estado = "Minas Gerais";
-            }
-            if (DigitoEstado == 7)
-            {
-                Estado = "Rio de Janeiro e Espírito Santo";
-            }
-            if (DigitoEstado == 8)
-            {
-                Estado = "São Paulo";
-            }
-            if (DigitoEstado == 9)
-            {
-                Estado = "Paraná e Santa Catarina";
-            }
-            if (DigitoEstado == 0)
-            {
-                Estado = "Rio Grande do Sul";
-            }
+                "Rio Grande do Sul",
+                "Distrito Federal, Goiás, Mato Grosso, Mato Grosso do Sul e Tocantins",
+                "Pará, Amazonas, Acre, Amapá, Rondônia e Roraima",
+                "Ceará, Maranhão e Piauí",
+                "Pernambuco, Rio Grande do Norte, Paraíba e Alagoas",
+                "Bahia e Sergipe",
+                "Minas Gerais",
+                "Rio de Janeiro e Espírito Santo",
+                "São Paulo",
+                "Paraná e Santa Catarina"
+            };
+
+            Estado = ListaEstados[DigitoEstado];
+
             return new RetornoResposta
             {
                 Valido = true,
