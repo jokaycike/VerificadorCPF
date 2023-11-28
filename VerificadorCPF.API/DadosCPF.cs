@@ -220,7 +220,7 @@ namespace VerificadorCPF.API
                 return new RetornoResposta
                 {
                     Valido = false,
-                    Mensagem = "CPF inserido não é inválido"
+                    Mensagem = "CPF inserido é inválido"
                 };
             }
         }
